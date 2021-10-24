@@ -1,4 +1,8 @@
-const opentype = require("opentype.js"), fs = require("fs"), path = require("path"), glob = require("glob");
+const
+    fs = require("fs"),
+    path = require("path"),
+    glob = require("glob"),
+    opentype = require("opentype.js");
 
 glob(
     "./*.ttf",
