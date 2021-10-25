@@ -15,15 +15,18 @@ glob(
             .forEach(
                 name => {
                     const
-                        map = {};
+                        map = {},
+                        {
+                            glyphs,
+                        } = opentype.loadSync(`./${name}.ttf`).glyphs;
 
-                    Object.values(opentype.loadSync(`./${name}.ttf`).glyphs.glyphs).forEach(
+                    Object.values(glyphs).forEach(
                         glyph => {
                             map[glyph.name] = glyph.unicode;
                         }
                     );
 
-                    fs.writeFile(`../glyphmaps/${name}.json`, JSON.stringify(map), () => { });
+                    fs.writeFile(`../glyphmaps/${name}.json`, JSON.stringify(map, null, 1), () => { });
                 }
             );
     }
