@@ -17,8 +17,10 @@ glob(
                     const
                         map = {},
                         {
-                            glyphs,
-                        } = opentype.loadSync(`./${name}.ttf`).glyphs;
+                            glyphs: {
+                                glyphs,
+                            },
+                        } = opentype.loadSync(`./${name}.ttf`);
 
                     Object.values(glyphs).forEach(
                         glyph => {
