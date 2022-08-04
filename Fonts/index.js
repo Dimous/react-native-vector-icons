@@ -5,30 +5,31 @@ const
     opentype = require("opentype.js");
 
 glob(
-    "./*.ttf",
+    "./*.{ttf,otf}",
     undefined,
     (error, files) => {
         files
-            .map(
-                file => path.basename(file, ".ttf")
-            )
             .forEach(
-                name => {
+                file => {
                     const
                         map = {},
                         {
                             glyphs: {
                                 glyphs,
                             },
-                        } = opentype.loadSync(`./${name}.ttf`);
+                        } = opentype.loadSync(file),
+                        file_name = path.basename(file, file.includes("ttf") ? ".ttf" : ".otf");
 
-                    Object.values(glyphs).forEach(
-                        glyph => {
-                            map[glyph.name] = glyph.unicode;
-                        }
-                    );
 
-                    fs.writeFile(`../glyphmaps/${name}.json`, JSON.stringify(map, null, 1), () => { });
+                    Object
+                        .values(glyphs)
+                        .forEach(
+                            glyph => {
+                                map[glyph.name] = glyph.unicode;
+                            }
+                        );
+
+                    fs.writeFile(`../glyphmaps/${file_name}.json`, JSON.stringify(map, null, 1), () => { });
                 }
             );
     }
