@@ -12,7 +12,6 @@ glob(
             .forEach(
                 file => {
                     const
-                        map = {},
                         {
                             glyphs: {
                                 glyphs,
@@ -20,16 +19,24 @@ glob(
                         } = opentype.loadSync(file),
                         file_name = path.basename(file, file.includes("ttf") ? ".ttf" : ".otf");
 
+                    fs.writeFile(
+                        `../glyphmaps/${file_name}.json`,
+                        JSON.stringify(
+                            Object
+                                .values(glyphs)
+                                .reduce(
+                                    (previous, current) => {
+                                        previous[current.name] = current.unicode;
 
-                    Object
-                        .values(glyphs)
-                        .forEach(
-                            glyph => {
-                                map[glyph.name] = glyph.unicode;
-                            }
-                        );
-
-                    fs.writeFile(`../glyphmaps/${file_name}.json`, JSON.stringify(map, null, 1), () => { });
+                                        return previous;
+                                    },
+                                    {}
+                                ),
+                            null,
+                            1
+                        ),
+                        () => { }
+                    );
                 }
             );
     }
